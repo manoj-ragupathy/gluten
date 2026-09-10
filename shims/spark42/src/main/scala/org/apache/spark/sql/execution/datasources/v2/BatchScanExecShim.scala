@@ -75,6 +75,12 @@ abstract class BatchScanExecShim(
       .exists(v => metadataColumnsNames.contains(v.name))
   }
 
+  // Spark 4.2 moved `postDriverMetrics` to SupportsCustomDriverMetrics and made the reported
+  // task metrics an explicit argument (see BatchScanExec in Spark 4.2).
+  def doPostDriverMetrics(): Unit = {
+    postDriverMetrics(scan.reportDriverMetrics())
+  }
+
   override def doExecuteColumnar(): RDD[ColumnarBatch] = {
     throw new UnsupportedOperationException("Need to implement this method")
   }
