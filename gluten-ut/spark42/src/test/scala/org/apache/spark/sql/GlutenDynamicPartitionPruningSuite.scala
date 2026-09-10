@@ -69,7 +69,7 @@ abstract class GlutenDynamicPartitionPruningSuiteBase
        """.stripMargin)
 
       val found = df.queryExecution.executedPlan.find {
-        case _ @BroadcastHashJoinExec(_, _, _: ExistenceJoin, _, _, _, _, _) => true
+        case b: BroadcastHashJoinExec if b.joinType.isInstanceOf[ExistenceJoin] => true
         case _ => false
       }
 

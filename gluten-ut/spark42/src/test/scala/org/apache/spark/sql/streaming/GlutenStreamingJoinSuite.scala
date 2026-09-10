@@ -18,18 +18,53 @@ package org.apache.spark.sql.streaming
 
 import org.apache.spark.sql.GlutenStreamingVanillaFallbackTestsTrait
 
-class GlutenStreamingInnerJoinSuite
+// Spark 4.2 made `testMode` abstract on StreamingJoinSuite and split each suite into
+// virtual-column-family (VCF) and non-VCF variants; these mirror the upstream split.
+
+class GlutenStreamingInnerWithVCFSuite
   extends StreamingInnerJoinSuite
-  with GlutenStreamingVanillaFallbackTestsTrait {}
+  with GlutenStreamingVanillaFallbackTestsTrait {
+  override protected def testMode = Mode.WithVCF
+}
 
-class GlutenStreamingOuterJoinSuite
+class GlutenStreamingInnerWithoutVCFSuite
+  extends StreamingInnerJoinSuite
+  with GlutenStreamingVanillaFallbackTestsTrait {
+  override protected def testMode = Mode.WithoutVCF
+}
+
+class GlutenStreamingOuterWithVCFSuite
   extends StreamingOuterJoinSuite
-  with GlutenStreamingVanillaFallbackTestsTrait {}
+  with GlutenStreamingVanillaFallbackTestsTrait {
+  override protected def testMode = Mode.WithVCF
+}
 
-class GlutenStreamingFullOuterJoinSuite
+class GlutenStreamingOuterWithoutVCFSuite
+  extends StreamingOuterJoinSuite
+  with GlutenStreamingVanillaFallbackTestsTrait {
+  override protected def testMode = Mode.WithoutVCF
+}
+
+class GlutenStreamingFullOuterWithVCFSuite
   extends StreamingFullOuterJoinSuite
-  with GlutenStreamingVanillaFallbackTestsTrait {}
+  with GlutenStreamingVanillaFallbackTestsTrait {
+  override protected def testMode = Mode.WithVCF
+}
 
-class GlutenStreamingLeftSemiJoinSuite
+class GlutenStreamingFullOuterWithoutVCFSuite
+  extends StreamingFullOuterJoinSuite
+  with GlutenStreamingVanillaFallbackTestsTrait {
+  override protected def testMode = Mode.WithoutVCF
+}
+
+class GlutenStreamingLeftSemiWithVCFSuite
   extends StreamingLeftSemiJoinSuite
-  with GlutenStreamingVanillaFallbackTestsTrait {}
+  with GlutenStreamingVanillaFallbackTestsTrait {
+  override protected def testMode = Mode.WithVCF
+}
+
+class GlutenStreamingLeftSemiWithoutVCFSuite
+  extends StreamingLeftSemiJoinSuite
+  with GlutenStreamingVanillaFallbackTestsTrait {
+  override protected def testMode = Mode.WithoutVCF
+}

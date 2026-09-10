@@ -673,7 +673,8 @@ class VeloxTestSettings extends BackendTestSettings {
     .exclude("Shouldn't bias towards build right if user didn't specify")
     .exclude("SPARK-23192: broadcast hint should be retained after using the cached data")
     .exclude("broadcast join where streamed side's output partitioning is HashPartitioning")
-  enableSuite[GlutenHashedRelationSuite]
+  enableSuite[GlutenHashedRelationOnHeapSuite]
+  enableSuite[GlutenHashedRelationOffHeapSuite]
   enableSuite[GlutenSingleJoinSuite]
   enableSuite[GlutenExistenceJoinSuite]
   enableSuite[GlutenInnerJoinSuiteForceShjOn]
@@ -1318,10 +1319,14 @@ class VeloxTestSettings extends BackendTestSettings {
   enableSuite[GlutenStreamingDeduplicationDistributionSuite]
   enableSuite[GlutenStreamingDeduplicationSuite]
   enableSuite[GlutenStreamingDeduplicationWithinWatermarkSuite]
-  enableSuite[GlutenStreamingFullOuterJoinSuite]
-  enableSuite[GlutenStreamingInnerJoinSuite]
-  enableSuite[GlutenStreamingLeftSemiJoinSuite]
-  enableSuite[GlutenStreamingOuterJoinSuite]
+  enableSuite[GlutenStreamingFullOuterWithVCFSuite]
+  enableSuite[GlutenStreamingFullOuterWithoutVCFSuite]
+  enableSuite[GlutenStreamingInnerWithVCFSuite]
+  enableSuite[GlutenStreamingInnerWithoutVCFSuite]
+  enableSuite[GlutenStreamingLeftSemiWithVCFSuite]
+  enableSuite[GlutenStreamingLeftSemiWithoutVCFSuite]
+  enableSuite[GlutenStreamingOuterWithVCFSuite]
+  enableSuite[GlutenStreamingOuterWithoutVCFSuite]
   enableSuite[GlutenStreamingQueryHashPartitionVerifySuite]
   enableSuite[GlutenStreamingQueryListenerSuite]
   enableSuite[GlutenStreamingQueryListenersConfSuite]

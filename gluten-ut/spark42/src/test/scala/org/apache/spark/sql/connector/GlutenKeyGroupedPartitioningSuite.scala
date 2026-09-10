@@ -21,7 +21,7 @@ import org.apache.gluten.execution.SortMergeJoinExecTransformer
 
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.{DataFrame, GlutenSQLTestsBaseTrait, Row}
-import org.apache.spark.sql.catalyst.plans.physical.KeyGroupedPartitioning
+import org.apache.spark.sql.catalyst.plans.physical.KeyedPartitioning
 import org.apache.spark.sql.connector.catalog.{Column, Identifier, InMemoryTableCatalog}
 import org.apache.spark.sql.connector.distributions.Distributions
 import org.apache.spark.sql.connector.expressions.Expressions.{bucket, days, identity, years}
@@ -87,7 +87,7 @@ class GlutenKeyGroupedPartitioningSuite
     }.flatMap(smj => collect(smj) { case s: ColumnarShuffleExchangeExec => s })
   }
 
-  private def collectShuffles(plan: SparkPlan): Seq[ShuffleExchangeLike] = {
+  override protected def collectShuffles(plan: SparkPlan): Seq[ShuffleExchangeLike] = {
     // here we skip collecting shuffle operators that are not associated with SMJ
     collect(plan) {
       case s: SortMergeJoinExec => s
@@ -100,7 +100,7 @@ class GlutenKeyGroupedPartitioningSuite
         })
   }
 
-  private def collectAllShuffles(plan: SparkPlan): Seq[ColumnarShuffleExchangeExec] = {
+  override protected def collectAllShuffles(plan: SparkPlan): Seq[ColumnarShuffleExchangeExec] = {
     collect(plan) { case s: ColumnarShuffleExchangeExec => s }
   }
 
@@ -1106,7 +1106,7 @@ class GlutenKeyGroupedPartitioningSuite
 
       val keyGroupedShuffles = collect(plan) {
         case s: ShuffleExchangeExec
-            if s.outputPartitioning.isInstanceOf[KeyGroupedPartitioning] =>
+            if s.outputPartitioning.isInstanceOf[KeyedPartitioning] =>
           s
       }
       assert(
@@ -1114,7 +1114,7 @@ class GlutenKeyGroupedPartitioningSuite
         "KeyGroupedPartitioning shuffle should fall back to a vanilla ShuffleExchangeExec")
 
       val columnarKeyGroupedShuffles = collectAllShuffles(plan)
-        .filter(_.outputPartitioning.isInstanceOf[KeyGroupedPartitioning])
+        .filter(_.outputPartitioning.isInstanceOf[KeyedPartitioning])
       assert(
         columnarKeyGroupedShuffles.isEmpty,
         "KeyGroupedPartitioning must not be offloaded to ColumnarShuffleExchangeExec")
