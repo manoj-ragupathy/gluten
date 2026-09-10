@@ -56,6 +56,11 @@ import scala.jdk.CollectionConverters._
 
 class Spark42Shims extends SparkShims {
 
+  override def getSampleSeed(plan: SampleExec): Long = plan.resolvedSeed
+
+  override def isKeyGroupedPartitioning(partitioning: Partitioning): Boolean =
+    partitioning.isInstanceOf[KeyedPartitioning]
+
   override def getLocalTableScanStream(plan: LocalTableScanExec): Option[SparkDataStream] =
     plan.stream
 

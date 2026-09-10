@@ -470,7 +470,7 @@ class VeloxSparkPlanExecApi extends SparkPlanExecApi with Logging {
             }
           }
         }
-      case _: KeyGroupedPartitioning =>
+      case p if SparkShimLoader.getSparkShims.isKeyGroupedPartitioning(p) =>
         FallbackTags.add(
           shuffle,
           ValidationResult.failed(
