@@ -57,6 +57,8 @@ class VeloxTestSettings extends BackendTestSettings {
   enableSuite[GlutenBloomFilterAggregateQuerySuiteCGOff]
   enableSuite[GlutenDataSourceV2DataFrameSessionCatalogSuite]
   enableSuite[GlutenDataSourceV2DataFrameSuite]
+  enableSuite[GlutenDataSourceV2EnhancedDeleteFilterSuite]
+  enableSuite[GlutenDataSourceV2EnhancedPartitionFilterSuite]
   enableSuite[GlutenDataSourceV2EnhancedRuntimePartitionFilterSuite]
   enableSuite[GlutenDataSourceV2FunctionSuite]
   enableSuite[GlutenDataSourceV2SQLSessionCatalogSuite]
